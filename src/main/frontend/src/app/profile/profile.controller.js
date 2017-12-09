@@ -8,13 +8,15 @@
     $scope.filenames=files.data;
     var vm = this;
 
+    $scope.profileParams={
+      fileName :""
+    };
+
     $scope.calcProfile=function () {
       $http({
         method: "POST",
         url: "http://localhost:8080/krugstat/rest/calculateProfile",
-        params:{
-          fileName:"BEM_120.DAT"
-        }
+        params:$scope.profileParams
       }).then(function (resp) {
           console.log("Профиль", resp)
           $scope.profile=resp.data;

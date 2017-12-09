@@ -23,7 +23,7 @@
     </div>
     <div class="row second-row">
         <div id="amplitudesHistogram">
-      <!--  <plotly plotly-data="{{scope.graphData}}" plotly-layout="{{scope.layout}}" plotly-options="options"></plotly>-->
+      <plotly ng-attr-plotlyData="{{graphData}}" ng-attr-plotlyLayout="{{layout}}"></plotly>
 
 </div><br>
         <input type="button" value="Записать амплитуды в файл" class="btn btn-primary" ng-click="writeAmplitudes()">

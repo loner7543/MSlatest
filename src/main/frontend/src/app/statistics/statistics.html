@@ -6,7 +6,8 @@
     {{filename}}
 </li>
     </ul><br>
-    <input type="button" value="Рассчитать статистику" ng-click="calculateMainStatistics()" class="btn btn-primary">
+    <input type="button" value="Рассчитать статистику" ng-click="calculateMainStatistics()" class="btn btn-primary"><br>
+    <input type="button" value="Ручной ввод" ng-click="ujd()" class="btn btn-primary">
 </div>
 
 <div class="column right-column">
@@ -23,7 +24,7 @@
     </div>
     <div class="row second-row">
         <div id="amplitudesHistogram">
-      <plotly ng-attr-plotlyData="{{graphData}}" ng-attr-plotlyLayout="{{layout}}"></plotly>
+      <plotly plotly-data="graphData"plotly-layout="layout"></plotly>
 
 </div><br>
         <input type="button" value="Записать амплитуды в файл" class="btn btn-primary" ng-click="writeAmplitudes()">

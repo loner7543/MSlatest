@@ -52,23 +52,29 @@ public class IndexController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public  ResponseEntity save(@RequestParam(value = "file") List<CommonsMultipartFile> files) throws IOException {
-        fileNames = new ArrayList<String>();
-        rawData = new ArrayList<RawData>(); //тут данные уже прошедшие через парсер
-        if(null != files && files.size() > 0) {
-            for (MultipartFile multipartFile : files) {
-                InputStream is = multipartFile.getInputStream();
-                String fileName = multipartFile.getOriginalFilename();
-                fileNames.add(fileName);
-                RawData readDataElem = null;
-                try {
-                    readDataElem = ReaderRawData.readData(fileName,is);
-                } catch (FileFormatException e) {
-                    e.printStackTrace();
+        try{
+            fileNames = new ArrayList<String>();
+            rawData = new ArrayList<RawData>(); //тут данные уже прошедшие через парсер
+            if(null != files && files.size() > 0) {
+                for (MultipartFile multipartFile : files) {
+                    InputStream is = multipartFile.getInputStream();
+                    String fileName = multipartFile.getOriginalFilename();
+                    fileNames.add(fileName);
+                    RawData readDataElem = null;
+                    try {
+                        readDataElem = ReaderRawData.readData(fileName,is);
+                    } catch (FileFormatException e) {
+                        e.printStackTrace();
+                    }
+                    rawData.add(readDataElem);
                 }
-                rawData.add(readDataElem);
             }
+            return new ResponseEntity(fileNames,HttpStatus.OK);
         }
-        return new ResponseEntity(fileNames,HttpStatus.OK);
+        catch (Exception e){
+            return new ResponseEntity(e,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @RequestMapping(value = "/Help", method = RequestMethod.GET)
@@ -115,24 +121,30 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/calculateCluglogramme", method = RequestMethod.POST)
-    public ResponseEntity calculateCruglogramme(@RequestParam String fileName,
-                                                @RequestParam String mode){
-        boolean type;
-        RawData elem = StreamHelper.getRawDataByFileName(fileName,rawData).get(0);
-        if (mode.equals("grann")){// гранность
-            type = false;
-            minBorder=16;
-            maxBorder=150;
+    public ResponseEntity calculateCruglogramme(@RequestParam(value = RawData.FILENAME) String fileName,
+                                                @RequestParam(value = RawData.MODE) String mode){
+        try {
+            boolean type;
+            RawData elem = StreamHelper.getRawDataByFileName(fileName,rawData).get(0);
+            if (mode.equals("grann")){// гранность
+                type = false;
+                minBorder=16;
+                maxBorder=150;
+            }
+            else {
+                type=true;// волнистость
+                minBorder=0;
+                maxBorder=15;
+            }
+            Converter  converter =new Converter(elem,type);
+            data = converter.createData(type,minBorder,maxBorder,1);//1- номер сечения. Спросить откуда брать сечение
+            heights=data.getH();
+            return new  ResponseEntity(heights,HttpStatus.OK);
         }
-        else {
-            type=true;// волнистость
-            minBorder=0;
-            maxBorder=15;
+        catch (Exception e){
+            return new  ResponseEntity(e,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Converter  converter =new Converter(elem,type);
-        data = converter.createData(type,minBorder,maxBorder,1);//1- номер сечения. Спросить откуда брать сечение
-        heights=data.getH();
-        return new  ResponseEntity(heights,HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/uploadAmplitudes", method = RequestMethod.GET)

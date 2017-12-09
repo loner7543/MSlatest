@@ -9,6 +9,9 @@ public class RawData implements Serializable
     @XmlTransient
     public static final String FILENAME="fileName";
 
+    @XmlTransient
+    public static final String MODE="mode";
+
 
     private String fileName;
     private double surfaceRadius;               //радиус фотоприемника LFP

@@ -22,10 +22,13 @@
         </div>
         <div>
             <p>Настройки</p><br>
-            <p><input type="radio" name="settings" value="grann">Гранность</p>
-            <p><input type="radio"name="settings" value="voln">Волнистость</p><br>
+            <p><input type="radio" ng-model="profileParams.mode" value="grann">Гранность</p>
+            <p><input type="radio" ng-model="profileParams.mode" value="voln">Волнистость</p><br>
             <input type="button" value="Рассчитать круглограмму" ng-click="calculateCruglogramme()" class="btn btn-primary"><br>
             <input type="button" value="Записать данные в файл" ng-click="uploadCruglogramme()" class="btn btn-primary"><br>
+            <ul>
+            <li ng-repeat="height in cruglogrammeHeights">{{height}}</li>
+            </ul>
         </div>
     </div>
 </div>

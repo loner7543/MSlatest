@@ -5,7 +5,7 @@
     .controller('StatisticsController', StatisticsController);
 
   /** @ngInject */
-  function StatisticsController($scope, $http,ngDialog,UtilsFunctionsFactory) {
+  function StatisticsController($scope, $http,ngDialog) {
     var vm = this;
 
     $scope.calculateMainStatistics = function () {
@@ -67,6 +67,13 @@
         function (result) {
           console.error(result, result.data);
         });
+    }
+
+    $scope.ujd = function () {
+      ngDialog.open({ template: 'app/statistics/inputStatisticsDialog.html',
+        className: 'ngdialog-theme-default',
+        scope: $scope
+      });
     }
 
     $scope.readAmplitudes = function () {

@@ -7,21 +7,10 @@
   function LoginController($scope, $http,$interval, $location,ngDialog,UtilsFunctionsFactory) {
     var vm = this;
     vm.UtilsFunctionsFactory = UtilsFunctionsFactory;
+    $scope.onSign = function () {
 
-    $scope.getAllBuyers = function () {
-     // var promise = $http.get($location.protocol() + '://' + $location.host() + ':'+ $location.port() + "/crudGoods/data/buyers.json");
-       var promise = $http.get("../../data/buyers.json");
-      promise.then(fulfilled, rejected)
-    }
-
-    function fulfilled(response){
-      console.log(response)
-    }
-
-    function rejected(err) {
-      console.log(err);
     }
   }
 
 })();
-// gttp data - тело запроса bodyParam
+// var promise = $http.get($location.protocol() + '://' + $location.host() + ':'+ $location.port() + "/crudGoods/data/buyers.json");

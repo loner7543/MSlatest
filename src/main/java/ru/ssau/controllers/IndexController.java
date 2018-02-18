@@ -149,14 +149,25 @@ public class IndexController {
 
     @RequestMapping(value = "/uploadAmplitudes", method = RequestMethod.GET)
     public ResponseEntity writeAmplitudesToFile() throws IOException {
+        try{
             int i = 1;
             List<String> amplitudes = new LinkedList<>();
             for (double amplitude:statisticsData.getAmplitudes()){
                 amplitudes.add(String.valueOf(i).concat("  ").concat(String.valueOf(amplitude)));
                 i++;
             }
-            FileUtils.writeFile("amplitudes.txt",amplitudes);
-        return new ResponseEntity(HttpStatus.OK);
+            PrintWriter writer = new PrintWriter("amplitudes.txt", "UTF-8");
+            for (String s:amplitudes){
+                writer.println(s);
+            }
+            writer.close();
+            //FileUtils.writeFile("amplitudes.txt",amplitudes);
+            return new ResponseEntity(writer,HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     /*
